@@ -30,8 +30,8 @@ public class EmployeeController {
     }
 
     @PutMapping("/{id}")
-    public void updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
-        employeeService.updateEmployee(id, employee);
+    public Employee updateEmployee(@PathVariable Long id, @RequestBody Employee employee){
+        return employeeService.updateEmployee(id, employee);
     }
 
     @DeleteMapping("/{id}")

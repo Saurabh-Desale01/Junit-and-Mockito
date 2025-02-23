@@ -1,7 +1,6 @@
 package com.example.spring_junit.repository;
 
 import com.example.spring_junit.model.Employee;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,38 +19,42 @@ class EmployeeRepositoryTest {
 
     private Employee employee1;
     private Employee employee2;
+
     @BeforeEach
     void setUp(){
         employee1 = new Employee(1L, "Devuser", "Developer", 10000.0);
         employee2 = new Employee(2L, "user", "BA", 10000.0);
-        employeeRepository.save(employee1);
-        employeeRepository.save(employee2);
+//        employeeRepository.save(employee1);
+//        employeeRepository.save(employee2);
     }
 
     @Test
     void saveEmployee(){
-        //Employee savedEmployee = employeeRepository.save(employee);
+        employeeRepository.save(employee1);
         assertNotNull(employee1);
         assertEquals("Devuser", employee1.getName());
     }
 
     @Test
     void getEmployeeById(){
-        Optional<Employee> getEmployee = employeeRepository.findById(employee1.getId());
-        //System.out.println(getEmployee.getName());
+        employeeRepository.save(employee1);
+        Optional<Employee> getEmployee = employeeRepository.findById(1L);
+        System.out.println("Get employee"+getEmployee.get().getName());
         assertTrue(getEmployee.isPresent());
         assertEquals("Developer", getEmployee.get().getDepartment());
-        //System.out.println(getEmployee.getName());
     }
 
     @Test
     void getAllEmployee(){
+        employeeRepository.save(employee1);
+        employeeRepository.save(employee2);
         List<Employee> allEmployee = employeeRepository.findAll();
         assertEquals(2, allEmployee.size());
     }
 
     @Test
     void updateEmployee(){
+        employeeRepository.save(employee2);
         employee2.setName("Testuser");
         employee2.setDepartment("QA");
 
@@ -61,12 +64,14 @@ class EmployeeRepositoryTest {
         assertEquals("QA",employee2.getDepartment());
     }
 
-//    @Test
-//    void deleteEmployee(){
-//        employeeRepository.deleteById(employee2.getId());
-//        Optional<Employee> deleteEmployee = employeeRepository.findById(employee2.getId());
-//        assertFalse(deleteEmployee.isPresent());
-//    }
+    @Test
+    void deleteEmployee(){
+        employeeRepository.save(employee2);
+        employeeRepository.deleteById(employee2.getId());
+        Optional<Employee> deleteEmployee = employeeRepository.findById(employee2.getId());
+        System.out.println(deleteEmployee.get().getName());
+        assertFalse(deleteEmployee.isPresent());
+    }
 
 
 }

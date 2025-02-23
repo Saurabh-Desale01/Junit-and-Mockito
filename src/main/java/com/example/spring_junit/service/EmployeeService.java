@@ -26,16 +26,17 @@ public class EmployeeService {
         return employeeRepository.save(employee);
     }
 
-    public void updateEmployee(Long id, Employee employee){
-        Optional<Employee> exstingEmployee = employeeRepository.findById(id);
-        if(exstingEmployee.isPresent()){
-            Employee updateEmployee = new Employee();
-            updateEmployee.setName(employee.getName());
-            updateEmployee.setDepartment(employee.getDepartment());
-            updateEmployee.setSalary(employee.getSalary());
+    public Employee updateEmployee(Long id, Employee employee){
+        Employee exstingEmployee = employeeRepository.findById(id).orElseThrow();
+        //if(exstingEmployee.isPresent()){
+            //Employee updateEmployee = new Employee();
+            exstingEmployee.setName(employee.getName());
+            exstingEmployee.setDepartment(employee.getDepartment());
+            exstingEmployee.setSalary(employee.getSalary());
 
-            employeeRepository.save(updateEmployee);
-        }
+            return employeeRepository.save(exstingEmployee);
+        //}
+        //return null;
     }
 
     public void deleteEmployee(Long id){
